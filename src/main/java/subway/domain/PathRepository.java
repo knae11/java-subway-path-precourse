@@ -52,12 +52,12 @@ public class PathRepository {
     }
 
     public static int getDistanceByList(List<Station> path) {
-        double totalTime = 0;
+        double totalDistance = 0;
         for (int i = 0; i < path.size() - 1; i++) {
-            totalTime += graphByDistance
+            totalDistance += graphByDistance
                 .getEdgeWeight(graphByDistance.getEdge(path.get(i), path.get(i + 1)));
         }
-        return (int) totalTime;
+        return (int) totalDistance;
     }
 
     public static int getTimeByList(List<Station> path) {
