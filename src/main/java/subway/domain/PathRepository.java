@@ -10,10 +10,10 @@ public class PathRepository {
         = new WeightedMultigraph<>(DefaultWeightedEdge.class);
     private static final WeightedMultigraph<Station, DefaultWeightedEdge> graphByTime
         = new WeightedMultigraph<>(DefaultWeightedEdge.class);
-    private static final DijkstraShortestPath<Station, Station> dijkstraShortestDistance
-        = new DijkstraShortestPath(graphByDistance);
-    private static final DijkstraShortestPath<Station, Station> dijkstraShortestTime
-        = new DijkstraShortestPath(graphByTime);
+    private static final DijkstraShortestPath<Station, DefaultWeightedEdge> dijkstraShortestDistance
+        = new DijkstraShortestPath<>(graphByDistance);
+    private static final DijkstraShortestPath<Station, DefaultWeightedEdge> dijkstraShortestTime
+        = new DijkstraShortestPath<>(graphByTime);
 
     private PathRepository() {
     }
