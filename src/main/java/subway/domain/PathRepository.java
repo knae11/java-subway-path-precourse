@@ -6,46 +6,52 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 import org.jgrapht.graph.WeightedMultigraph;
 
 public class PathRepository {
-    private static final WeightedMultigraph<String, DefaultWeightedEdge> graphByDistance
+    private static final WeightedMultigraph<Station, DefaultWeightedEdge> graphByDistance
         = new WeightedMultigraph<>(DefaultWeightedEdge.class);
-    private static final WeightedMultigraph<String, DefaultWeightedEdge> graphByTime
+    private static final WeightedMultigraph<Station, DefaultWeightedEdge> graphByTime
         = new WeightedMultigraph<>(DefaultWeightedEdge.class);
-    private static final DijkstraShortestPath<String, String> dijkstraShortestDistance
+    private static final DijkstraShortestPath<Station, Station> dijkstraShortestDistance
         = new DijkstraShortestPath(graphByDistance);
-    private static final DijkstraShortestPath<String, String> dijkstraShortestTime
+    private static final DijkstraShortestPath<Station, Station> dijkstraShortestTime
         = new DijkstraShortestPath(graphByTime);
 
     private PathRepository() {
     }
 
     public static void addGraphVertex(String vertex) {
-        graphByDistance.addVertex(vertex);
-        graphByTime.addVertex(vertex);
+        graphByDistance.addVertex(StationRepository.getStationByName(vertex));
+        graphByTime.addVertex(StationRepository.getStationByName(vertex));
     }
 
-    public static void setGraphEdgeWeight(String sourceVertex, String targetVertex, int distance,
+    public static void addGraphEdgeAndWeight(String sourceVertex, String targetVertex, int distance,
         int time) {
-        setWeightByDistance(sourceVertex, targetVertex, distance);
-        setWeightByTime(sourceVertex, targetVertex, time);
+        addWeightByDistance(sourceVertex, targetVertex, distance);
+        addWeightByTime(sourceVertex, targetVertex, time);
     }
 
-    private static void setWeightByDistance(String sourceVertex, String targetVertex, int weight) {
-        graphByDistance.setEdgeWeight(graphByDistance.addEdge(sourceVertex, targetVertex), weight);
+    private static void addWeightByDistance(String sourceVertex, String targetVertex, int weight) {
+        graphByDistance.setEdgeWeight(graphByDistance
+            .addEdge(StationRepository.getStationByName(sourceVertex),
+                StationRepository.getStationByName(targetVertex)), weight);
     }
 
-    private static void setWeightByTime(String sourceVertex, String targetVertex, int weight) {
-        graphByTime.setEdgeWeight(graphByTime.addEdge(sourceVertex, targetVertex), weight);
+    private static void addWeightByTime(String sourceVertex, String targetVertex, int weight) {
+        graphByTime.setEdgeWeight(graphByTime
+            .addEdge(StationRepository.getStationByName(sourceVertex),
+                StationRepository.getStationByName(targetVertex)), weight);
     }
 
-    public static List<String> getListByShortestDistance(String source, String sink) {
-        return dijkstraShortestDistance.getPath(source, sink).getVertexList();
+    public static List<Station> getListByShortestDistance(String source, String sink) {
+        return dijkstraShortestDistance.getPath(StationRepository.getStationByName(source),
+            StationRepository.getStationByName(sink)).getVertexList();
     }
 
-    public static List<String> getListByShortestTime(String source, String sink) {
-        return dijkstraShortestTime.getPath(source, sink).getVertexList();
+    public static List<Station> getListByShortestTime(String source, String sink) {
+        return dijkstraShortestTime.getPath(StationRepository.getStationByName(source),
+            StationRepository.getStationByName(sink)).getVertexList();
     }
 
-    public static int getDistanceByList(List<String> path) {
+    public static int getDistanceByList(List<Station> path) {
         double totalTime = 0;
         for (int i = 0; i < path.size() - 1; i++) {
             totalTime += graphByDistance
@@ -54,7 +60,7 @@ public class PathRepository {
         return (int) totalTime;
     }
 
-    public static int getTimeByList(List<String> path) {
+    public static int getTimeByList(List<Station> path) {
         double totalTime = 0;
         for (int i = 0; i < path.size() - 1; i++) {
             totalTime += graphByTime

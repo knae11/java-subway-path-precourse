@@ -4,6 +4,7 @@ import java.util.List;
 import subway.common.GuideMessage;
 import subway.common.InfoMessage;
 import subway.domain.PathRepository;
+import subway.domain.Station;
 
 public class PathOutputManager {
     private static final String ENTER_DEPARTURE_STATION = "출발역을 입력하세요.";
@@ -23,13 +24,13 @@ public class PathOutputManager {
         GuideMessage.print(ENTER_ARRIVAL_STATION);
     }
 
-    public static void printResult(List<String> path) {
+    public static void printResult(List<Station> path) {
         GuideMessage.print(RESULT);
         InfoMessage.print(DIVIDER);
         InfoMessage.print(TOTAL_DISTANCE + PathRepository.getDistanceByList(path) + KM);
         InfoMessage.print(TOTAL_TIME + PathRepository.getTimeByList(path) + MINUTE);
         InfoMessage.print(DIVIDER);
-        path.forEach(InfoMessage::print);
+        path.stream().map(Station::getName).forEach(InfoMessage::print);
     }
 
 }

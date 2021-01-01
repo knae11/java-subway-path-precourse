@@ -6,6 +6,7 @@ import subway.common.ErrorCustomException;
 import subway.common.ErrorMessage;
 import subway.domain.PathRepository;
 import subway.domain.Menu;
+import subway.domain.Station;
 import subway.view.menu.MenuInputManager;
 import subway.domain.MenuKeys;
 import subway.view.menu.MenuOutputManager;
@@ -44,7 +45,7 @@ public class SearchingPathController {
     private void searchShortestTime() {
         try {
             String[] stations = pathInputManager.inputStations();
-            List<String> path = PathRepository.getListByShortestTime(stations[0], stations[1]);
+            List<Station> path = PathRepository.getListByShortestTime(stations[0], stations[1]);
             PathOutputManager.printResult(path);
         } catch (ErrorCustomException errorCustomException) {
             ErrorMessage.print(errorCustomException);
@@ -54,7 +55,7 @@ public class SearchingPathController {
     private void searchShortestDistance() {
         try {
             String[] stations = pathInputManager.inputStations();
-            List<String> path = PathRepository.getListByShortestDistance(stations[0], stations[1]);
+            List<Station> path = PathRepository.getListByShortestDistance(stations[0], stations[1]);
             PathOutputManager.printResult(path);
         } catch (ErrorCustomException errorCustomException) {
             ErrorMessage.print(errorCustomException);
